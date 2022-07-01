@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.AttrValueMapper">
+    <update id="attrValueUpdate">
+        update attrvaluelist
+        <set>
+            <if test="valueName != null">valueName = #{valueName},</if>
+            <if test="attrId != null">attrId = #{attrId}</if>
+        </set>
+        <where>
+        id = #{id}
+        </where>
+    </update>
+</mapper>

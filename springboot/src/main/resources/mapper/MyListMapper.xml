@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.MyListMapper">
+    <resultMap id="goods" type="com.example.springboot.entity.Goods">
+        <result column="id" property="id"></result>
+        <result column="defaultImg" property="defaultImg"></result>
+        <result column="price" property="price"></result>
+        <result column="title" property="title"></result>
+    </resultMap>
+
+    <select id="getGoodsList" resultMap="goods">
+        select skulist.id,
+        skulist.skuDefaultImg as defaultImg,
+        skulist.price,
+        skulist.skuName as title
+        FROM skulist
+        LEFT JOIN base_trademark on skulist.tmId = base_trademark.tmId
+        <where>
+            <if test="category3Id!=null">
+                category3Id=#{category3Id}
+            </if>
+            <if test="categoryName!=null">
+                and skulist.skuName like concat('%', #{categoryName}, '%')
+            </if>
+            <if test="keyword!=null">
+                and skulist.skuName like concat('%', #{keyword}, '%')
+            </if>
+            <if test="trademark!=null">
+                and base_trademark.tmName like concat('%', #{trademark}, '%')
+            </if>
+        </where>
+        LIMIT #{pageNum},#{pageSize}
+    </select>
+    <select id="selectAll" resultType="java.lang.Integer">
+        select count(*)
+        FROM skulist
+        LEFT JOIN base_trademark on skulist.tmId = base_trademark.tmId
+        <where>
+            <if test="c3Id!=null">
+                category3Id=#{c3Id}
+            </if>
+            <if test="categoryName!=null">
+                and skulist.skuName like concat('%', #{categoryName}, '%')
+            </if>
+            <if test="keyword!=null">
+                and skulist.skuName like concat('%', #{keyword}, '%')
+            </if>
+            <if test="trademark!=null">
+                and base_trademark.tmName like concat('%', #{trademark}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>

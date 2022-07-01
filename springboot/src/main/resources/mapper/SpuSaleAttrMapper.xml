@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.SpuSaleAttrMapper">
+    <update id="updateSpuSaleAttrList">
+        update spusaleattrlist
+        <set>
+            <if test="spuId != null">
+                spuId = #{spuId},
+            </if>
+            <if test="baseSaleAttrId != null">
+                baseSaleAttrId = #{baseSaleAttrId},
+            </if>
+            <if test="saleAttrName != null">
+                saleAttrName =#{saleAttrName}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <resultMap id="list1" type="com.example.springboot.entity.SpuSaleAttr">
+        <result column="id" property="id"></result>
+        <result column="spuId" property="spuId"></result>
+        <result column="baseSaleAttrId" property="baseSaleAttrId"></result>
+        <result column="saleAttrName" property="saleAttrName"></result>
+        <collection property="spuSaleAttrValueList" javaType="java.util.ArrayList" ofType="com.example.springboot.entity.SpuSaleValue">
+            <result column="id" property="id"></result>
+            <result column="spuId" property="spuId"></result>
+            <result column="baseSaleAttrId" property="baseSaleAttrId"></result>
+            <result column="saleAttrValueName" property="saleAttrValueName"></result>
+            <result column="saleAttrName" property="saleAttrName"></result>
+            <result column="isChecked" property="isChecked"></result>
+        </collection>
+    </resultMap>
+
+    <select id="selectSpuSaleAttrList" resultMap="list1">
+        select spusaleattrlist.*,spusalevaluelist.* from spusaleattrlist
+        left join spusalevaluelist on spusaleattrlist.spuId = spusalevaluelist.spuId and spusaleattrlist.baseSaleAttrId = spusalevaluelist.baseSaleAttrId
+        where spusaleattrlist.spuId = #{spuId}
+    </select>
+</mapper>

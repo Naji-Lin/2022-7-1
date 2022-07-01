@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.SkuListMapper">
+    <resultMap id="list1" type="com.example.springboot.entity.SkuList">
+        <result column="id" property="id"></result>
+        <result column="spuId" property="spuId"></result>
+        <result column="price" property="price"></result>
+        <result column="skuName" property="skuName"></result>
+        <result column="skuDesc" property="skuDesc"></result>
+        <result column="weight" property="weight"></result>
+        <result column="tmId" property="tmId"></result>
+        <result column="category3Id" property="category3Id"></result>
+        <result column="skuDefaultImg" property="skuDefaultImg"></result>
+        <result column="isSale" property="isSale"></result>
+        <result column="createTime" property="createTime"></result>
+        <collection property="skuImageList" javaType="java.util.ArrayList" ofType="com.example.springboot.entity.SkuImageList">
+            <result column="id" property="id"></result>
+            <result column="skuId" property="skuId"></result>
+            <result column="imgName" property="imgName"></result>
+            <result column="imgUrl" property="imgUrl"></result>
+            <result column="spuImgId" property="spuImgId"></result>
+            <result column="isDefault" property="isDefault"></result>
+        </collection>
+        <collection property="skuAttrValueList" javaType="java.util.ArrayList" ofType="com.example.springboot.entity.SkuAttrValue">
+            <result column="id" property="id"></result>
+            <result column="attrId" property="attrId"></result>
+            <result column="valueId" property="valueId"></result>
+            <result column="skuId" property="skuId"></result>
+            <result column="attrName" property="attrName"></result>
+            <result column="valueName" property="valueName"></result>
+        </collection>
+        <collection property="skuSaleAttrValueList" javaType="java.util.ArrayList" ofType="com.example.springboot.entity.SkuSaleAttr">
+            <result column="id" property="id"></result>
+            <result column="skuId" property="skuId"></result>
+            <result column="spuId" property="spuId"></result>
+            <result column="saleAttrValueId" property="saleAttrValueId"></result>
+            <result column="saleAttrId" property="saleAttrId"></result>
+            <result column="saleAttrName" property="saleAttrName"></result>
+            <result column="saleAttrValueName" property="saleAttrValueName"></result>
+        </collection>
+    </resultMap>
+
+    <select id="getSkuById" resultMap="list1">
+        select skulist.*,skuimagelist.*,skuattrvaluelist.*,skusaleattrvaluelist.* from skulist
+        left join skuimagelist on skulist.id = skuimagelist.skuId
+        left join skuattrvaluelist on skulist.id = skuattrvaluelist.skuId
+        left join skusaleattrvaluelist on skulist.id = skusaleattrvaluelist.skuId
+        where skulist.id = #{skuId}
+    </select>
+</mapper>

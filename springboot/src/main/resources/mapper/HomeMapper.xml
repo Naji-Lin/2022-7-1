@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.HomeMapper">
+    <resultMap id="list1" type="com.example.springboot.entity.BaseCategoryList">
+        <result column="id" property="categoryId"></result>
+        <result column="name" property="categoryName"></result>
+        <collection property="categoryChild" javaType="java.util.ArrayList" ofType="com.example.springboot.entity.CategoryChild" resultMap="list2"></collection>
+    </resultMap>
+    <resultMap id="list2" type="com.example.springboot.entity.CategoryChild">
+        <result column="id2" property="categoryId"></result>
+        <result column="name2" property="categoryName"></result>
+        <collection property="categoryChild" javaType="java.util.ArrayList" ofType="com.example.springboot.entity.DemoCategoryChild">
+            <result column="id3" property="categoryId"></result>
+            <result column="name3" property="categoryName"></result>
+        </collection>
+    </resultMap>
+
+    <select id="getBaseCategoryList" resultMap="list1">
+        select category1.*,
+        category2.name as name2,
+        category2.id as id2,
+        category3.name as name3,
+        category3.id as id3
+        from category1
+        left join category2 on category1.id = category2.category1Id
+        left join category3 on category2.id = category3.category2Id
+    </select>
+</mapper>
